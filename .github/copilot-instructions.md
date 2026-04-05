@@ -21,25 +21,41 @@ dotnet tool restore # Restore local tools (MGCB content pipeline)
 
 No test project or linter is configured.
 
-## Architecture
+## Project
 
 Tower defense game built with MonoGame 3.8 (DesktopGL) on .NET 9. Single-project, flat file structure — all `.cs` files live in the project root under namespace `monogame_funny_game`.
 
-**MonoGame lifecycle:** `Program.cs` instantiates `Game1`, which follows the standard MonoGame loop: `Initialize()` → `LoadContent()` → `Update()`/`Draw()` at ~60 FPS.
+MonoGame lifecycle: `Program.cs` instantiates `Game1`, which follows the standard loop: `Initialize()` → `LoadContent()` → `Update()`/`Draw()` at ~60 FPS.
 
-**Planned classes** (see `PLAN.md` for full design, being built in phases):
+Content pipeline: assets must be registered in `Content/Content.mgcb` (platform: DesktopGL, profile: Reach) and loaded via `Content.Load<T>("AssetName")` in `LoadContent()`.
 
-- `Map.cs` — 20×10 grid of 64×64 tiles, procedural path generation with hardcoded snake fallback
-- `Tower.cs` / `TowerType.cs` — Placement, targeting (furthest-along-path enemy in range), cooldowns
-- `Enemy.cs` / `EnemyType.cs` — Path-following with HP, speed, slow effects
-- `Projectile.cs` — Homing projectiles, disappear if target dies
-- `WaveManager.cs` — 10-wave definitions with spawn timing
-- `GameState.cs` — Lives, currency, win/lose tracking
-- `Game1.cs` orchestrates everything: input, game screens (Menu → Playing → GameOver/Victory), HUD
+Resolution: 1280x720. Play area is 1280x640 (20x10 grid), bottom 80px is HUD.
 
-## Key Conventions
+## Agent Orchestration
 
-- **Content pipeline:** Assets must be registered in `Content/Content.mgcb` (platform: DesktopGL, profile: Reach) and loaded via `Content.Load<T>("AssetName")` in `LoadContent()`. The `.mgcb` file currently has no assets registered — they need to be added as implementation progresses.
-- **Resolution:** 1280×720. Play area is 1280×640 (20×10 grid), bottom 80px is HUD.
-- **HP bars:** Drawn with a runtime-created 1×1 white pixel texture, no asset needed.
-- **Fallback art:** If image assets aren't available, generate solid-color placeholder textures at runtime.
+`PLAN.md` is the single source of truth. It is organized into sections, each owned by a specific agent with explicit file ownership.
+
+### Available Agents
+
+| Agent           | Domain                                                              |
+| --------------- | ------------------------------------------------------------------- |
+| `@orchestrator` | Reads `PLAN.md`, delegates work, runs parallel jobs, enforces locks |
+| `@map-agent`    | Tile grids, procedural map generation, grid rendering               |
+| `@enemy-agent`  | Enemy entities, pathfinding, status effects                         |
+| `@tower-agent`  | Tower placement, input, currency                                    |
+| `@combat-agent` | Projectiles, targeting, damage                                      |
+| `@wave-agent`   | Wave spawning, progression, win/lose                                |
+| `@hud-agent`    | HUD, health bars, placement preview                                 |
+| `@menu-agent`   | Screen flow, menus, state transitions                               |
+
+### Lock Protocol
+
+Agents must not edit the same file concurrently. Before an agent edits a file, a `.locks/{filename}.lock` file must be created with the agent name. When the agent is done, the lock is removed. If a lock exists, another agent must wait.
+
+### Parallelism Rules
+
+Agents whose file ownership in `PLAN.md` does not overlap may run in parallel. The orchestrator determines parallelism by reading the file ownership table in each plan section.
+
+### Shared File: Game1.cs
+
+`Game1.cs` is touched by multiple agents. It must be edited sequentially — only one agent may hold its lock at a time. The orchestrator is responsible for ordering access.
