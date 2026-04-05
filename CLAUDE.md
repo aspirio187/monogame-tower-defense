@@ -28,8 +28,8 @@ Simple tower defense game using MonoGame 3.8 (DesktopGL) on .NET 9. Single-proje
 
 ## Architecture
 
-- **Program.cs** — Entry point; instantiates and runs `Game1`.
-- **Game1.cs** — Main game class. Standard MonoGame lifecycle: `Initialize()` → `LoadContent()` → game loop (`Update()` / `Draw()`).
+- **Program.cs** — Entry point; instantiates and runs `TowerDefenseGame`.
+- **TowerDefenseGame.cs** — Main game class. Standard MonoGame lifecycle: `Initialize()` → `LoadContent()` → game loop (`Update()` / `Draw()`).
 - **Content/Content.mgcb** — Content pipeline manifest (platform: DesktopGL, profile: Reach). Assets go here.
 
 ## MonoGame Conventions

@@ -105,18 +105,18 @@ Still need to be registered in `Content/Content.mgcb` during implementation.
 
 ## Agent Sections
 
-Each section below is owned by one agent. File ownership is explicit — only the owning agent may create/edit those files. `Game1.cs` is shared and requires lock coordination (see copilot-instructions.md).
+Each section below is owned by one agent. File ownership is explicit — only the owning agent may create/edit those files. `TowerDefenseGame.cs` is shared and requires lock coordination (see copilot-instructions.md).
 
 ---
 
 ### @map-agent
 
 **Owns:** `Map.cs`, `Content/Content.mgcb` (grass.png + path.png entries only)
-**Touches (shared):** `Game1.cs`
+**Touches (shared):** `TowerDefenseGame.cs`
 
 - Create `Map.cs`: constants (`TileSize=64`, `Cols=20`, `Rows=10`), `int[,] Grid`, `List<Vector2> Waypoints`, `bool[,] Occupied`, `IsBuildable(col, row)`, procedural generator, hardcoded fallback, `Draw(SpriteBatch, Texture2D, Texture2D)`
 - Register `grass.png` and `path.png` in `Content.mgcb`
-- In `Game1.cs`: set resolution 1280x720, load grass/path textures, instantiate Map, draw it, `R` key to regenerate
+- In `TowerDefenseGame.cs`: set resolution 1280x720, load grass/path textures, instantiate Map, draw it, `R` key to regenerate
 - **Verify:** different path each launch
 
 ---
@@ -124,12 +124,12 @@ Each section below is owned by one agent. File ownership is explicit — only th
 ### @enemy-agent
 
 **Owns:** `EnemyType.cs`, `Enemy.cs`, `Content/Content.mgcb` (enemy PNG entries only)
-**Touches (shared):** `Game1.cs`
+**Touches (shared):** `TowerDefenseGame.cs`
 
 - Create `EnemyType.cs`: enum + static stats lookup (see Enemies table)
 - Create `Enemy.cs`: position, HP, speed, reward, waypoint index, slow timer/factor, `IsAlive`, `ReachedEnd`, `Update(GameTime, waypoints)`, `TakeDamage(float)`, `ApplySlow(float, float)`, `Draw(SpriteBatch, Texture2D)`
 - Register 4 enemy PNGs in `Content.mgcb`
-- In `Game1.cs`: load enemy textures, add `List<Enemy>`, spawn test enemies, update/draw them
+- In `TowerDefenseGame.cs`: load enemy textures, add `List<Enemy>`, spawn test enemies, update/draw them
 - **Verify:** enemies walk the path
 
 ---
@@ -137,13 +137,13 @@ Each section below is owned by one agent. File ownership is explicit — only th
 ### @tower-agent
 
 **Owns:** `TowerType.cs`, `Tower.cs`, `GameState.cs`, `Content/Content.mgcb` (tower PNG entries only)
-**Touches (shared):** `Game1.cs`
+**Touches (shared):** `TowerDefenseGame.cs`
 
 - Create `TowerType.cs`: enum + static stats lookup (see Towers table)
 - Create `Tower.cs`: type, col, row, position (tile center), stats fields, `Draw(SpriteBatch, Texture2D)`
 - Create `GameState.cs`: `Lives=20`, `Currency=150`, `GameOver`, `GameWon`, `TryPurchase(int)`, `EnemyKilled(int)`, `EnemyReachedEnd()`
 - Register 3 tower PNGs in `Content.mgcb`
-- In `Game1.cs`: load tower textures, add `List<Tower>`, `GameState`, `selectedTower`, keys 1/2/3 select type, left-click places on buildable tiles, deduct currency
+- In `TowerDefenseGame.cs`: load tower textures, add `List<Tower>`, `GameState`, `selectedTower`, keys 1/2/3 select type, left-click places on buildable tiles, deduct currency
 - **Verify:** towers placed on grass, rejected on path/occupied/broke
 
 ---
@@ -152,12 +152,12 @@ Each section below is owned by one agent. File ownership is explicit — only th
 
 **Owns:** `Projectile.cs`, `Content/Content.mgcb` (projectile.png entry only)
 **Modifies:** `Tower.cs`
-**Touches (shared):** `Game1.cs`
+**Touches (shared):** `TowerDefenseGame.cs`
 
 - Create `Projectile.cs`: position, speed, damage, target (Enemy ref), slow factor/duration, `IsActive`, `Update(GameTime)` (homing, hit at <5px, deactivate if target dead), `Draw(SpriteBatch, Texture2D)`
 - Register `projectile.png` in `Content.mgcb`
 - Add to `Tower.cs`: fire cooldown, `Update(GameTime, List<Enemy>, List<Projectile>)` — target furthest-along enemy in range, spawn projectile on cooldown
-- In `Game1.cs`: load projectile texture, add `List<Projectile>`, update towers/projectiles, handle enemy death (reward) and removal
+- In `TowerDefenseGame.cs`: load projectile texture, add `List<Projectile>`, update towers/projectiles, handle enemy death (reward) and removal
 - **Verify:** towers shoot and kill enemies
 
 ---
@@ -165,10 +165,10 @@ Each section below is owned by one agent. File ownership is explicit — only th
 ### @wave-agent
 
 **Owns:** `WaveManager.cs`
-**Touches (shared):** `Game1.cs`
+**Touches (shared):** `TowerDefenseGame.cs`
 
 - Create `WaveManager.cs`: `WaveDefinition` struct (enemy list + spawn interval), all 10 waves hardcoded (see Waves table), `CurrentWave`, spawn timer, 5s pause timer, `AllWavesComplete`, `Update(GameTime, List<Enemy>, List<Vector2> waypoints)` — spawns at first waypoint, advances waves when all enemies cleared
-- In `Game1.cs`: add `WaveManager`, call its Update, check GameOver/GameWon, remove test enemy spawning from enemy-agent phase
+- In `TowerDefenseGame.cs`: add `WaveManager`, call its Update, check GameOver/GameWon, remove test enemy spawning from enemy-agent phase
 - **Verify:** waves progress, win after 10, lose at 0 lives
 
 ---
@@ -176,19 +176,19 @@ Each section below is owned by one agent. File ownership is explicit — only th
 ### @hud-agent
 
 **Owns:** `Content/Content.mgcb` (hud_font.spritefont entry only)
-**Touches (shared):** `Game1.cs`
+**Touches (shared):** `TowerDefenseGame.cs`
 
 - Register `hud_font.spritefont` in `Content.mgcb`
-- In `Game1.cs`: load SpriteFont, create 1x1 white pixel texture, draw HUD bar at bottom (wave number, lives, currency, selected tower + cost), draw HP bars above enemies (red bg + green proportional), draw range circle on hover before placing, green/red tile tint for valid/invalid placement
+- In `TowerDefenseGame.cs`: load SpriteFont, create 1x1 white pixel texture, draw HUD bar at bottom (wave number, lives, currency, selected tower + cost), draw HP bars above enemies (red bg + green proportional), draw range circle on hover before placing, green/red tile tint for valid/invalid placement
 - **Verify:** HUD readable, HP bars visible, placement preview works
 
 ---
 
 ### @menu-agent
 
-**Touches (shared):** `Game1.cs`
+**Touches (shared):** `TowerDefenseGame.cs`
 
-- In `Game1.cs`: add `GameScreen` enum (`Menu`, `Playing`, `GameOver`, `Victory`), start on `Menu` screen, draw title + "Play"/"Quit" buttons (spritefont + rectangle hitboxes), click Play → generate map + reset state + start waves, ESC during play → return to menu, game over/victory → show result text then return to menu
+- In `TowerDefenseGame.cs`: add `GameScreen` enum (`Menu`, `Playing`, `GameOver`, `Victory`), start on `Menu` screen, draw title + "Play"/"Quit" buttons (spritefont + rectangle hitboxes), click Play → generate map + reset state + start waves, ESC during play → return to menu, game over/victory → show result text then return to menu
 - **Verify:** full flow — menu → play → win/lose → menu, repeatable
 
 ---
@@ -197,7 +197,7 @@ Each section below is owned by one agent. File ownership is explicit — only th
 
 Agents that do NOT share files can run in parallel. Suggested groupings:
 
-1. **Parallel:** `@map-agent` + `@enemy-agent` + `@tower-agent` (each own separate .cs files, share Game1.cs sequentially via locks)
+1. **Parallel:** `@map-agent` + `@enemy-agent` + `@tower-agent` (each own separate .cs files, share TowerDefenseGame.cs sequentially via locks)
 2. **Sequential after group 1:** `@combat-agent` (modifies Tower.cs from tower-agent)
 3. **Sequential after combat:** `@wave-agent` (replaces test spawning)
 4. **Sequential after wave:** `@hud-agent`

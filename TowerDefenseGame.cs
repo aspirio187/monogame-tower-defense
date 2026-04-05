@@ -4,12 +4,12 @@ using Microsoft.Xna.Framework.Input;
 
 namespace monogame_funny_game;
 
-public class Game1 : Game
+public class TowerDefenseGame : Game
 {
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
 
-    public Game1()
+    public TowerDefenseGame()
     {
         _graphics = new GraphicsDeviceManager(this);
         Content.RootDirectory = "Content";

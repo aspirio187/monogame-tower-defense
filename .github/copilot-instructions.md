@@ -56,6 +56,6 @@ Agents must not edit the same file concurrently. Before an agent edits a file, a
 
 Agents whose file ownership in `PLAN.md` does not overlap may run in parallel. The orchestrator determines parallelism by reading the file ownership table in each plan section.
 
-### Shared File: Game1.cs
+### Shared File: TowerDefenseGame.cs
 
-`Game1.cs` is touched by multiple agents. It must be edited sequentially — only one agent may hold its lock at a time. The orchestrator is responsible for ordering access.
+`TowerDefenseGame.cs` is touched by multiple agents. It must be edited sequentially — only one agent may hold its lock at a time. The orchestrator is responsible for ordering access.
