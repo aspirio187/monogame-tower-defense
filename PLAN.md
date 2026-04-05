@@ -149,61 +149,25 @@ Content files:
 
 ---
 
-## Asset Prompts for ChatGPT/DALL-E
+## Assets — DONE
 
-### Tiles (64x64 px)
+All assets are generated, resized, and in `Content/`:
 
-**grass.png:**
+| Asset        | Size  | File                  |
+| ------------ | ----- | --------------------- |
+| Grass tile   | 64x64 | `grass.png`           |
+| Path tile    | 64x64 | `path.png`            |
+| Arrow tower  | 48x48 | `tower_arrow.png`     |
+| Cannon tower | 48x48 | `tower_cannon.png`    |
+| Ice tower    | 48x48 | `tower_ice.png`       |
+| Goblin       | 32x32 | `enemy_goblin.png`    |
+| Orc          | 32x32 | `enemy_orc.png`       |
+| Wolf         | 32x32 | `enemy_wolf.png`      |
+| Troll        | 32x32 | `enemy_troll.png`     |
+| Projectile   | 8x8   | `projectile.png`      |
+| HUD font     | —     | `hud_font.spritefont` |
 
-> A 64x64 pixel top-down game tile of green grass with subtle texture variation, simple 2D pixel art style for a tower defense game, flat lighting, no shadows, seamless edges, bright green color palette
-
-**path.png:**
-
-> A 64x64 pixel top-down game tile of a dirt path, simple 2D pixel art style for a tower defense game, flat lighting, sandy brown color with small pebble details, seamless edges
-
-### Towers (48x48 px, transparent background)
-
-**tower_arrow.png:**
-
-> A 48x48 pixel top-down view of a wooden archer tower for a 2D tower defense game, simple pixel art style, circular wooden base with a bow on top, brown and tan colors, no background (transparent), flat icon style
-
-**tower_cannon.png:**
-
-> A 48x48 pixel top-down view of a stone cannon tower for a 2D tower defense game, simple pixel art style, circular gray stone base with a dark cannon barrel pointing right, no background (transparent), flat icon style
-
-**tower_ice.png:**
-
-> A 48x48 pixel top-down view of an ice crystal tower for a 2D tower defense game, simple pixel art style, circular blue crystalline base with ice shards on top, light blue and white colors, no background (transparent), flat icon style
-
-### Enemies (32x32 px, transparent background)
-
-**enemy_goblin.png:**
-
-> A 32x32 pixel top-down view of a small green goblin character for a 2D tower defense game, simple pixel art style, round green body with pointy ears, no background (transparent), flat icon style, cute proportions
-
-**enemy_orc.png:**
-
-> A 32x32 pixel top-down view of a muscular green orc warrior for a 2D tower defense game, simple pixel art style, large round body with armor and tusks, no background (transparent), flat icon style
-
-**enemy_wolf.png:**
-
-> A 32x32 pixel top-down view of a gray wolf for a 2D tower defense game, simple pixel art style, sleek gray canine body seen from above, no background (transparent), flat icon style
-
-**enemy_troll.png:**
-
-> A 32x32 pixel top-down view of a large purple troll boss for a 2D tower defense game, simple pixel art style, big round purple body with club, no background (transparent), flat icon style, menacing
-
-### Projectile (8x8 px, transparent background)
-
-**projectile.png:**
-
-> An 8x8 pixel bright yellow circle projectile for a 2D tower defense game, simple glowing orb, pixel art, no background (transparent), solid bright yellow with slight white center highlight
-
-### Font
-
-**hud_font.spritefont** — Standard MonoGame SpriteFont XML file (Arial, size 18). Not a DALL-E asset — generated as code.
-
-**Total: 10 PNGs + 1 SpriteFont**
+Still need to be registered in `Content/Content.mgcb` during implementation.
 
 ---
 
