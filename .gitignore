@@ -1,0 +1,22 @@
+## .NET / C#
+bin/
+obj/
+*.user
+*.suo
+*.cache
+*.dll
+*.exe
+*.pdb
+*.nupkg
+*.snupkg
+
+## IDE
+.vs/
+.vscode/
+.idea/
+*.swp
+*~
+
+## MonoGame Content Pipeline
+Content/bin/
+Content/obj/
