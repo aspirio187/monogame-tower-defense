@@ -7,35 +7,35 @@
       "commands": [
         "mgcb-editor"
       ],
-      "rollForward": false
+      "rollForward": true
     },
     "dotnet-mgcb-editor-linux": {
       "version": "3.8.4.1",
       "commands": [
         "mgcb-editor-linux"
       ],
-      "rollForward": false
+      "rollForward": true
     },
     "dotnet-mgcb-editor-windows": {
       "version": "3.8.4.1",
       "commands": [
         "mgcb-editor-windows"
       ],
-      "rollForward": false
+      "rollForward": true
     },
     "dotnet-mgcb-editor-mac": {
       "version": "3.8.4.1",
       "commands": [
         "mgcb-editor-mac"
       ],
-      "rollForward": false
+      "rollForward": true
     },
     "dotnet-mgcb": {
       "version": "3.8.4.1",
       "commands": [
         "mgcb"
       ],
-      "rollForward": false
+      "rollForward": true
     }
   }
 }
